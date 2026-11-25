@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ember">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator | Zeyad Gaber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">=</span>
+      <div>
+        <h1>Calc<span class="dot">.</span></h1>
+        <p>Scientific, converter, money, dates, hex and graphs in one place.</p>
+      </div>
+    </div>
+    <div class="themes" role="group" aria-label="Colour theme">
+      <button class="theme-dot" data-theme-set="ember" aria-label="Ember theme" title="Ember"></button>
+      <button class="theme-dot" data-theme-set="moss" aria-label="Moss theme" title="Moss"></button>
+      <button class="theme-dot" data-theme-set="coral" aria-label="Coral theme" title="Coral"></button>
+    </div>
+  </header>
+
+  <main class="scene">
+    <section class="calculator" id="calculator">
+      <nav class="tabs" role="tablist" aria-label="Modes">
+        <button class="tab active" role="tab" data-tab="calc">Calc</button>
+        <button class="tab" role="tab" data-tab="convert">Convert</button>
+        <button class="tab" role="tab" data-tab="money">Money</button>
+        <button class="tab" role="tab" data-tab="dates">Dates</button>
+        <button class="tab" role="tab" data-tab="prog">Hex</button>
+        <button class="tab" role="tab" data-tab="graph">Graph</button>
+      </nav>
+
+      <!-- ============ CALC ============ -->
+      <div class="panel active" id="panel-calc">
+        <div class="display" id="displayBox">
+          <div class="disp-bar">
+            <button class="chip" id="degToggle" title="Switch degrees / radians">DEG</button>
+            <button class="chip" id="shiftToggle" title="Second functions">2nd</button>
+            <span class="chip chip-static mem-flag" id="memFlag" hidden>M</span>
+            <span class="spacer"></span>
+            <button class="chip icon" id="copyBtn" title="Copy result" aria-label="Copy result">Copy</button>
+            <button class="chip icon hist-open" id="histOpen" title="History" aria-label="History">History</button>
+          </div>
+          <div class="expr" id="expr">&nbsp;</div>
+          <div class="result" id="result">0</div>
+        </div>
+
+        <div class="mem" role="group" aria-label="Memory">
+          <button class="key key-mem" data-action="mc">MC</button>
+          <button class="key key-mem" data-action="mr">MR</button>
+          <button class="key key-mem" data-action="mplus">M+</button>
+          <button class="key key-mem" data-action="mminus">M&minus;</button>
+          <button class="key key-mem" data-action="ans">Ans</button>
+        </div>
+
+        <div class="sci" id="sciGrid" role="group" aria-label="Scientific functions"></div>
+
+        <div class="pad">
+          <button class="key key-danger" data-action="clear">C</button>
+          <button class="key key-util" data-action="back" aria-label="Backspace"><svg width="22" height="15" viewBox="0 0 22 15" fill="none" aria-hidden="true"><path d="M7.2 1.5h12.3a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H7.2a1.5 1.5 0 0 1-1.06-.44L1.4 8.06a1.5 1.5 0 0 1 0-2.12l4.74-4.5a1.5 1.5 0 0 1 1.06-.44Z" stroke="currentColor" stroke-width="1.4"/><path d="m11 5 5 5m0-5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="key key-util" data-insert="%">%</button>
+          <button class="key key-op" data-insert="/">&divide;</button>
+
+          <button class="key key-num" data-insert="7">7</button>
+          <button class="key key-num" data-insert="8">8</button>
+          <button class="key key-num" data-insert="9">9</button>
+          <button class="key key-op" data-insert="*">&times;</button>
+
+          <button class="key key-num" data-insert="4">4</button>
+          <button class="key key-num" data-insert="5">5</button>
+          <button class="key key-num" data-insert="6">6</button>
+          <button class="key key-op" data-insert="-">&minus;</button>
+
+          <button class="key key-num" data-insert="1">1</button>
+          <button class="key key-num" data-insert="2">2</button>
+          <button class="key key-num" data-insert="3">3</button>
+          <button class="key key-op" data-insert="+">+</button>
+
+          <button class="key key-util" data-action="negate">&plusmn;</button>
+          <button class="key key-num" data-insert="0">0</button>
+          <button class="key key-num" data-insert=".">.</button>
+          <button class="key key-eq" data-action="equals">=</button>
+        </div>
+      </div>
+
+      <!-- ============ CONVERT ============ -->
+      <div class="panel" id="panel-convert">
+        <div class="cats" id="convCats" role="group" aria-label="Unit category"></div>
+        <div class="conv-box">
+          <label class="field"><span>From</span>
+            <div class="pair"><input id="convA" type="text" inputmode="decimal" value="1" autocomplete="off"><select id="convUnitA"></select></div>
+          </label>
+          <button class="swap" id="convSwap" aria-label="Swap units">&#8645;</button>
+          <label class="field"><span>To</span>
+            <div class="pair"><input id="convB" type="text" inputmode="decimal" autocomplete="off"><select id="convUnitB"></select></div>
+          </label>
+        </div>
+        <p class="note" id="convFormula"></p>
+        <div class="quick" id="convQuick"></div>
+      </div>
+
+      <!-- ============ MONEY ============ -->
+      <div class="panel" id="panel-money">
+        <div class="card-sub">
+          <h3>Percentages</h3>
+          <div class="row"><span>What is</span><input id="p1a" inputmode="decimal" value="15"><span>% of</span><input id="p1b" inputmode="decimal" value="240"><b class="out" id="p1o"></b></div>
+          <div class="row"><input id="p2a" inputmode="decimal" value="30"><span>is what % of</span><input id="p2b" inputmode="decimal" value="120"><b class="out" id="p2o"></b></div>
+          <div class="row"><span>From</span><input id="p3a" inputmode="decimal" value="80"><span>to</span><input id="p3b" inputmode="decimal" value="100"><b class="out" id="p3o"></b></div>
+        </div>
+        <div class="card-sub">
+          <h3>Discount and VAT</h3>
+          <div class="grid3"><label><span>Price</span><input id="d_price" inputmode="decimal" value="1200"></label><label><span>Discount %</span><input id="d_disc" inputmode="decimal" value="20"></label><label><span>VAT %</span><input id="d_vat" inputmode="decimal" value="14"></label></div>
+          <div class="results" id="d_out"></div>
+        </div>
+        <div class="card-sub">
+          <h3>Split a bill</h3>
+          <div class="grid3"><label><span>Bill</span><input id="s_bill" inputmode="decimal" value="860"></label><label><span>Tip %</span><input id="s_tip" inputmode="decimal" value="10"></label><label><span>People</span><input id="s_ppl" inputmode="numeric" value="4"></label></div>
+          <div class="results" id="s_out"></div>
+        </div>
+        <div class="card-sub">
+          <h3>Loan payment</h3>
+          <div class="grid3"><label><span>Amount</span><input id="l_amt" inputmode="decimal" value="250000"></label><label><span>Rate %/yr</span><input id="l_rate" inputmode="decimal" value="18"></label><label><span>Years</span><input id="l_yrs" inputmode="decimal" value="3"></label></div>
+          <div class="results" id="l_out"></div>
+        </div>
+      </div>
+
+      <!-- ============ DATES ============ -->
+      <div class="panel" id="panel-dates">
+        <div class="card-sub">
+          <h3>Between two dates</h3>
+          <div class="grid2"><label><span>From</span><input type="date" id="dt_from"></label><label><span>To</span><input type="date" id="dt_to"></label></div>
+          <div class="results" id="dt_out"></div>
+        </div>
+        <div class="card-sub">
+          <h3>Add or subtract</h3>
+          <div class="grid2"><label><span>Start</span><input type="date" id="da_start"></label><label><span>Amount</span><input id="da_n" inputmode="numeric" value="45"></label><label><span>Unit</span><select id="da_unit"><option value="d">days</option><option value="w">weeks</option><option value="m">months</option><option value="y">years</option></select></label><label><span>Direction</span><select id="da_dir"><option value="1">after</option><option value="-1">before</option></select></label></div>
+          <div class="results" id="da_out"></div>
+        </div>
+        <div class="card-sub">
+          <h3>Age</h3>
+          <div class="grid2"><label><span>Born</span><input type="date" id="ag_born" value="2005-06-02"></label></div>
+          <div class="results" id="ag_out"></div>
+        </div>
+      </div>
+
+      <!-- ============ HEX ============ -->
+      <div class="panel" id="panel-prog">
+        <div class="cats" id="baseChips" role="group" aria-label="Number base">
+          <button class="cat active" data-base="10">DEC</button>
+          <button class="cat" data-base="16">HEX</button>
+          <button class="cat" data-base="2">BIN</button>
+          <button class="cat" data-base="8">OCT</button>
+        </div>
+        <label class="field"><span>Value</span><input id="progIn" type="text" value="255" autocomplete="off" spellcheck="false"></label>
+        <div class="bases" id="progOut"></div>
+        <div class="card-sub">
+          <h3>Bitwise (64-bit)</h3>
+          <div class="row"><span>B</span><input id="progB" type="text" value="15" autocomplete="off" spellcheck="false"></div>
+          <div class="results" id="bitOut"></div>
+        </div>
+      </div>
+
+      <!-- ============ GRAPH ============ -->
+      <div class="panel" id="panel-graph">
+        <div class="fn-row"><span class="fn-tag f1">f(x) =</span><input id="fn1" type="text" value="sin(x)*x" autocomplete="off" spellcheck="false"></div>
+        <div class="fn-row"><span class="fn-tag f2">g(x) =</span><input id="fn2" type="text" value="x^2/10" autocomplete="off" spellcheck="false"></div>
+        <div class="graph-wrap">
+          <canvas id="graph" aria-label="Function graph"></canvas>
+          <div class="graph-read" id="graphRead">Drag to pan, scroll or use + / &minus; to zoom</div>
+        </div>
+        <div class="graph-ctl">
+          <button class="chip" id="gZoomIn">+</button>
+          <button class="chip" id="gZoomOut">&minus;</button>
+          <button class="chip" id="gReset">Reset</button>
+          <span class="note small">Angles in radians. Use x as the variable.</span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="history" id="history" aria-label="History">
+      <div class="hist-head">
+        <h2>History</h2>
+        <div>
+          <button class="chip" id="histClear">Clear</button>
+          <button class="chip hist-close" id="histClose">Close</button>
+        </div>
+      </div>
+      <ul class="hist-list" id="histList"></ul>
+      <p class="hist-empty" id="histEmpty">Your calculations show up here. Tap a result to reuse it, or the expression to edit it.</p>
+    </aside>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <footer>
+    <p>© 2025 Zeyad Gaber | All Rights Reserved</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
